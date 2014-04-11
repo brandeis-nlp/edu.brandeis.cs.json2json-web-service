@@ -131,7 +131,9 @@ public class Json2JsonWSTest extends  WebServiceTest {
             "    }\n" +
             "  }\n" +
             "}";
-    @Override
+
+
+
     public Data getInput(){
         Container container = new Container();
         container.setText(OriginJson);
@@ -139,7 +141,7 @@ public class Json2JsonWSTest extends  WebServiceTest {
         return new Data(Types.JSON, container.toJson());
     }
 
-    @Override
+
     public Data getOuput() {
         Data res = new Data(Types.JSON);
         res.setPayload(TargetJson);
