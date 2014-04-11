@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.brandeis.cs.json2json-web-service</groupId>
-    <artifactId>edu.brandeis.cs.json2json-web-service</artifactId>
+    <groupId>org.lappsgrid</groupId>
+    <artifactId>json2json-web-service</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <scm>
@@ -44,7 +44,10 @@
     </properties>
 
     <dependencies>
-        <dependency> <groupId>org.lappsgrid</groupId> <artifactId>json2json</artifactId> <version>0.1.4</version> </dependency>
+        <dependency> <groupId>org.lappsgrid</groupId>
+            <artifactId>json2json</artifactId>
+            <version>0.1.6</version>
+        </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>core</artifactId>
@@ -60,6 +63,13 @@
             <artifactId>service-grid-libs</artifactId>
             <version>1.1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.anc.lapps</groupId>
+            <artifactId>serialization</artifactId>
+            <version>0.12.1</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
