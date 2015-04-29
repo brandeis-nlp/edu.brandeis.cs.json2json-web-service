@@ -72,8 +72,10 @@ public class Json2Json {
         dsl = dsl.replaceAll("\\.foreach\\s*\\{",".collect{");
         dsl = dsl.replaceAll("\\.select\\s*\\{",".findAll{");
         dsl = dsl.replaceAll("\\&\\$","__source_json__.");
+        dsl = dsl.replaceAll("%\\$","__source_json__.");
         // replace local json
         dsl = dsl.replaceAll("\\&\\.","it.");
+        dsl = dsl.replaceAll("%\\.","it.");
         return dsl;
     }
 

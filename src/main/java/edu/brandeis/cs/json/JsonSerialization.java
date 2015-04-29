@@ -82,7 +82,7 @@ public class JsonSerialization {
         discriminator = json.get("discriminator").toString().trim();
         if(discriminator.equals(Discriminators.Uri.JSON_LD)) {
             payload = (JsonObject)json.get("payload");
-            metadata = (JsonObject)payload.get("metadata");
+            metadata = (JsonObject)json.get("metadata");
             if (metadata == null) {
                 metadata = JsonProxy.newObject();
                 operator = OperatorType.json2json;
@@ -93,7 +93,7 @@ public class JsonSerialization {
                     operator =  OperatorType.valueOf(metadata.get("op").toString().trim().toLowerCase());
                 }
                 if(operator == OperatorType.json2json || operator == OperatorType.xml2json) {
-                    template = (String) metadata.get("template");
+                    template = metadata.get("template").toString();
                 }
             }
             JsonArray sourceArr =  (JsonArray)payload.get("sources");
@@ -109,9 +109,9 @@ public class JsonSerialization {
         targets.add(target);
     }
 //
-//    public JsonObject getJSONObject() {
-//        return json;
-//    }
+    public JsonObject getJSONObject() {
+        return json;
+    }
 //
 //    public JsonObject newViewsMetadata(JsonObject view){
 //        JsonObject metadata = view.getJsonObject("metadata");
