@@ -1,7 +1,13 @@
 package edu.brandeis.cs.json2json;
 
+import edu.brandeis.cs.json.JsonProxy;
+import edu.brandeis.cs.json.JsonSerialization;
+import org.apache.commons.io.IOUtils;
 import org.lappsgrid.api.WebService;
+import org.lappsgrid.discriminator.Discriminators;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.Logger;
 
 /**
@@ -63,11 +69,78 @@ public class Json2JsonWS implements WebService, ITransform {
 
     @Override
     public String execute(String s) {
-        return null;
+        JsonSerialization json = null;
+        try{
+            s = s.trim();
+            if (s.startsWith("{") && s.endsWith("}")) {
+                json = new JsonSerialization(s);
+                if (json.getDiscriminator().equals(Discriminators.Uri.ERROR)) {
+                    return json.toString();
+                }
+            } else {
+                json = new JsonSerialization();
+                json.setError("Only JSON imput is allowed!", "Unkown input: " + s);
+                return json.toString();
+            }
+            return execute(json);
+        }catch(Throwable th) {
+            json = new JsonSerialization();
+            StringWriter sw = new StringWriter();
+            th.printStackTrace( new PrintWriter(sw));
+            json.setError(th.toString(), sw.toString());
+            System.err.println(sw.toString());
+            return json.toString();
+        }
     }
+
+    public String execute(JsonSerialization json) throws Exception {
+        for (String source : json.getSources()) {
+            String target = null;
+            if (json.getOperator() == JsonSerialization.OperatorType.json2json) {
+                String template = json.getTemplate();
+                target = json2json(source, template);
+            }else if (json.getOperator() == JsonSerialization.OperatorType.xml2xml) {
+                String template = json.getTemplate();
+                target = xml2xml(source, template);
+            }else if (json.getOperator() == JsonSerialization.OperatorType.xml2json) {
+                target = xml2json(source);
+            }else if (json.getOperator() == JsonSerialization.OperatorType.json2xml) {
+                target = json2xml(source);
+            }
+            json.addTarget(target);
+        }
+        return json.toString();
+    }
+
 
     @Override
     public String getMetadata() {
-        return null;
+        {
+            // get caller name using reflection
+            String name = this.getClass().getName();
+            //
+            String resName = "/metadata/"+ name +".json";
+            System.out.println("load resources:" + resName);
+
+            try {
+                String meta = IOUtils.toString(this.getClass().getResourceAsStream(resName));
+                JsonProxy.JsonObject json = JsonProxy.newObject();
+                json.put("discriminator", Discriminators.Uri.META);
+                json.put("payload", json.read(meta));
+                return json.toString();
+            }catch (Throwable th) {
+                JsonProxy.JsonObject json = JsonProxy.newObject();
+                json.put("discriminator", Discriminators.Uri.ERROR);
+                JsonProxy.JsonObject error = JsonProxy.newObject();
+                error.put("class", name);
+                error.put("error", "NOT EXIST: "+resName);
+                error.put("message", th.getMessage());
+                StringWriter sw = new StringWriter();
+                th.printStackTrace( new PrintWriter(sw));
+                error.put("stacktrace", sw.toString());
+                json.put("payload", error);
+                return json.toString();
+            }
+        }
     }
 }

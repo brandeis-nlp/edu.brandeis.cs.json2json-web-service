@@ -1,13 +1,8 @@
 package edu.brandeis.cs.json;
 
-import org.lappsgrid.discriminator.Discriminators;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.brandeis.cs.json.JsonProxy;
-import edu.brandeis.cs.json.JsonProxy.JsonObject;
 import edu.brandeis.cs.json.JsonProxy.JsonArray;
+import edu.brandeis.cs.json.JsonProxy.JsonObject;
+import org.lappsgrid.discriminator.Discriminators;
 
 /**
  * Created by lapps on 10/22/2014.
@@ -17,16 +12,33 @@ import edu.brandeis.cs.json.JsonProxy.JsonArray;
 public class JsonSerialization {
     String discriminator = null;
     JsonObject payload = null;
-
-
-
 //    JsonObject text = null;
-//    JsonObject error = null;
-//    String context =  "http://vocab.lappsgrid.org/context-1.0.0.jsonld";
-//
-//    JsonObject metadata = null;
-//    JsonArray views = null;
-//    JsonObject json = null;
+    JsonObject error = null;
+    String context =  "http://vocab.lappsgrid.org/context-1.0.0.jsonld";
+    JsonObject metadata = null;
+    JsonObject json = null;
+    JsonArray targets = null;
+
+    public static enum OperatorType {
+        json2json,
+        xml2json,
+        json2xml,
+        xml2xml
+    }
+    OperatorType operator = null;
+    String [] sources = null;
+    String template = null;
+
+    public String[] getSources() {
+        return sources;
+    }
+
+    public OperatorType getOperator(){
+        return operator;
+    }
+
+    //    JsonArray views = null;
+
 //
 //    String idHeader = "";
 //    int id = 0;
@@ -44,46 +56,58 @@ public class JsonSerialization {
 //        this.text.put("@value", text);
 //    }
 //
-//    public JsonSerialization() {
-//        discriminator = Discriminators.Uri.JSON_LD;
-//        payload= JsonProxy.newObject();
-//        text = JsonProxy.newObject();
-//        views =  JsonProxy.newArray();
-//        metadata = JsonProxy.newObject();
-//        json = JsonProxy.newObject();
-//        error = JsonProxy.newObject();
-//    }
+    public JsonSerialization() {
+        discriminator = Discriminators.Uri.JSON_LD;
+        payload= JsonProxy.newObject();
+        metadata = JsonProxy.newObject();
+        operator = OperatorType.json2json;
+        error = JsonProxy.newObject();
+        targets = JsonProxy.newArray();
+    }
 //
-//    public void setDiscriminator(String s) {
-//        this.discriminator = s;
-//    }
+    public void setDiscriminator(String s) {
+        this.discriminator = s;
+    }
 //
-//    public String getDiscriminator() {
-//        return discriminator;
-//    }
+    public String getTemplate() {
+        return template;
+    }
+
+    public String getDiscriminator() {
+        return discriminator;
+    }
 //
-//    public JsonSerialization(String textjson) {
-//        json = new JsonObject(textjson);
-//        discriminator = json.getString("discriminator").trim();
-//        if (discriminator.equals(Discriminators.Uri.TEXT)) {
-//            text = JsonProxy.newObject();
-//            text.put("@value", json.getString("payload"));
-//            // reinitialize other parts.
-//            discriminator = Discriminators.Uri.JSON_LD;
-//            payload = JsonProxy.newObject();
-//            metadata =  JsonProxy.newObject();
-//            views = JsonProxy.newArray();
-//        } else if(discriminator.equals(Discriminators.Uri.JSON_LD)) {
-//            payload = json.getJsonObject("payload");
-//            text = payload.getJsonObject("text");
-//            metadata = payload.getJsonObject("metadata");
-//            if (metadata == null)
-//                metadata = JsonProxy.newObject();
-//            views =  payload.getJsonArray("views");
-//            if (views == null)
-//                views = JsonProxy.newArray();
-//        }
-//    }
+    public JsonSerialization(String textjson) {
+        json = JsonProxy.newObject().read(textjson);
+        discriminator = json.get("discriminator").toString().trim();
+        if(discriminator.equals(Discriminators.Uri.JSON_LD)) {
+            payload = (JsonObject)json.get("payload");
+            metadata = (JsonObject)payload.get("metadata");
+            if (metadata == null) {
+                metadata = JsonProxy.newObject();
+                operator = OperatorType.json2json;
+            } else {
+                if(metadata.get("op") == null) {
+                    operator = OperatorType.json2json;
+                } else {
+                    operator =  OperatorType.valueOf(metadata.get("op").toString().trim().toLowerCase());
+                }
+                if(operator == OperatorType.json2json || operator == OperatorType.xml2json) {
+                    template = (String) metadata.get("template");
+                }
+            }
+            JsonArray sourceArr =  (JsonArray)payload.get("sources");
+            sources = new String[sourceArr.length()];
+            for(int i = 0; i < sourceArr.length(); i++) {
+                sources[i] = sourceArr.get(i).toString();
+            }
+            targets = JsonProxy.newArray();
+        }
+    }
+
+    public void addTarget(String target) {
+        targets.add(target);
+    }
 //
 //    public JsonObject getJSONObject() {
 //        return json;
@@ -251,13 +275,13 @@ public class JsonSerialization {
 //        setFeature(annotation, "ne", ne);
 //    }
 //
-//    public void setError(String msg, String stacktrace) {
-//        this.setDiscriminator(Discriminators.Uri.ERROR);
-//        JsonObject val = JsonProxy.newObject();
-//        val.put("@value", msg);
-//        val.put("stacktrace", stacktrace);
-//        error.put("text",  val);
-//    }
+    public void setError(String msg, String stacktrace) {
+        this.setDiscriminator(Discriminators.Uri.ERROR);
+        JsonObject val = JsonProxy.newObject();
+        val.put("@value", msg);
+        val.put("stacktrace", stacktrace);
+        error.put("text",  val);
+    }
 //
 //
 //
@@ -275,21 +299,18 @@ public class JsonSerialization {
 //        return features;
 //    }
 //
-//    public String toString(){
-//        json.put("discriminator" ,discriminator);
-//        if (discriminator.equals(Discriminators.Uri.TEXT)) {
-//            json.put("payload" ,text.getString("@value"));
-//        } else if (discriminator.equals(Discriminators.Uri.JSON_LD)) {
-//            json.put("payload" ,payload);
-//            payload.put("@context",context);
-//            payload.put("metadata", metadata);
-//            payload.put("text", text);
-//            payload.put("views", views);
-//        } else if(discriminator.equals(Discriminators.Uri.ERROR)) {
-//            json.put("payload" ,error);
-//        }
-//        return json.toString();
-//    }
+    public String toString(){
+        json.put("discriminator" ,discriminator);
+        if (discriminator.equals(Discriminators.Uri.JSON_LD)) {
+            payload.put("targets", targets);
+            json.put("payload" ,payload);
+            payload.put("@context",context);
+            payload.put("metadata", metadata);
+        } else if(discriminator.equals(Discriminators.Uri.ERROR)) {
+            json.put("payload" ,error);
+        }
+        return json.toString();
+    }
 //
 //    @Override
 //    public boolean equals(Object o) {
