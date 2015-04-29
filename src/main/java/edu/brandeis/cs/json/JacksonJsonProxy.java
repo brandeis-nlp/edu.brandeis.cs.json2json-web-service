@@ -225,5 +225,4 @@ public class JacksonJsonProxy implements JsonProxy.NewProxy {
             return null;
         }
     }
-
 }

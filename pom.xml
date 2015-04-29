@@ -124,7 +124,7 @@
                 <version>2.7.2</version>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=512m</argLine>
+                    <!--<argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=512m</argLine>-->
                     <!-- mvn test: java.lang.OutOfMemoryError: Java heap space -->
                 </configuration>
             </plugin>

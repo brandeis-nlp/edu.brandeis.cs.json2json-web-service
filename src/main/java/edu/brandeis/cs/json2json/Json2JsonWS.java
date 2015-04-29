@@ -16,27 +16,6 @@ import java.util.logging.Logger;
 public class Json2JsonWS implements WebService, ITransform {
     protected static Logger log = Logger.getLogger(Json2JsonWS.class.getName());
 
-//    @Override
-//    public Data execute(Data input) {
-//        if (input == null || input.getDiscriminator() != Types.JSON) {
-//            throw new UnknownFormatFlagsException("Only JSON format is valid. But your input Discriminator is not Types.JSON");
-//        }
-//        String payload = input.getPayload();
-//        Container container = new Container(payload);
-////        System.out.println(">>>>>>>>>>>>>>>" + container);
-//        String json = container.getText();
-//        String template = container.getMetadata().get(Template).toString();
-//        Data output  = new Data(Types.JSON);
-//        try{
-//            String targetJson = Json2Json.transform(template, json);
-//            output.setPayload(targetJson);
-//        }catch (Json2JsonException e) {
-//            output.setPayload(e.toString());
-//            output.setDiscriminator(Types.ERROR);
-//        }
-//        return output;
-//    }
-
     public String json2json(String sourceJson, String templateDsl) throws Exception{
         System.out.println("Json:\n" + sourceJson);
         System.out.println("Dsl:\n" + templateDsl);
@@ -126,17 +105,19 @@ public class Json2JsonWS implements WebService, ITransform {
                 String meta = IOUtils.toString(this.getClass().getResourceAsStream(resName));
                 JsonProxy.JsonObject json = JsonProxy.newObject();
                 json.put("discriminator", Discriminators.Uri.META);
-                json.put("payload", json.read(meta));
+                json.put("payload",  JsonProxy.newObject().read(meta));
+                System.out.println("---------------------META:-------------------\n" + json.toString());
                 return json.toString();
             }catch (Throwable th) {
                 JsonProxy.JsonObject json = JsonProxy.newObject();
                 json.put("discriminator", Discriminators.Uri.ERROR);
                 JsonProxy.JsonObject error = JsonProxy.newObject();
                 error.put("class", name);
-                error.put("error", "NOT EXIST: "+resName);
+                error.put("error", "NOT EXIST: " + resName);
                 error.put("message", th.getMessage());
                 StringWriter sw = new StringWriter();
                 th.printStackTrace( new PrintWriter(sw));
+                System.err.println(sw.toString());
                 error.put("stacktrace", sw.toString());
                 json.put("payload", error);
                 return json.toString();
