@@ -32,19 +32,33 @@ public class Json2JsonWS implements WebService, ITransform {
 //    }
 
     public String json2json(String sourceJson, String templateDsl) throws Exception{
-        return Json2Json.json2json(sourceJson, templateDsl);
+        System.out.println("Json:\n" + sourceJson);
+        System.out.println("Dsl:\n" + templateDsl);
+        String res = Json2Json.json2json(sourceJson, templateDsl);
+        System.out.println("Json2Json:\n" + res);
+        return res;
     }
 
     public String xml2xml(String sourceXml, String templateXsl)  throws Exception{
-        return Json2Json.xml2xml(sourceXml, templateXsl);
+        System.out.println("Xml:\n" + sourceXml);
+        System.out.println("Xsl:\n" + templateXsl);
+        String res = Json2Json.xml2xml(sourceXml, templateXsl);
+        System.out.println("Xml2Xml:\n" + res);
+        return res;
     }
 
     public String xml2json(String xml) throws Exception {
-        return Json2Json.xml2json(xml);
+        System.out.println("Xml:\n" + xml);
+        String res = Json2Json.xml2json(xml);
+        System.out.println("Xml2Json:\n" + res);
+        return res;
     }
 
     public String json2xml(String json) throws Exception {
-        return Json2Json.json2xml(json);
+        System.out.println("Json:\n" + json);
+        String res = Json2Json.json2xml(json);
+        System.out.println("Json2Xml:\n" + res);
+        return res;
     }
 
     @Override
