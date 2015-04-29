@@ -1,12 +1,18 @@
 package edu.brandeis.cs.json2json;
 
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import org.lappsgrid.api.Data;
 
-public class WebServiceTest {
+import java.io.File;
+
+public class TestWebService {
+    public static String readResource(String filename) throws Exception {
+        File objFile = new File(TestWebService.class.getResource("/" + filename).toURI());
+        return FileUtils.readFileToString(objFile, "UTF-8");
+    }
+
 
     @Before
     public void setup(){
@@ -19,12 +25,4 @@ public class WebServiceTest {
         System.out.println("=============================================================>");
     }
 
-
-    public Data getInput(){
-        return new Data();
-    }
-
-    public Data getOuput() {
-        return new Data();
-    }
 }
