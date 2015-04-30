@@ -28,11 +28,11 @@ public class TestJson2Json {
     }
 
     @Test
-    public void testXml2Xml()throws Exception{
+    public void testXml2XmlXsl()throws Exception{
         String xml = readResource("cdcatalog.xml");
         String xsl = readResource("cdcatalog.xsl");
         String target = readResource("cdcatalog_with_xsl.html");
-        String result = Json2Json.xml2xml(xml, xsl);
+        String result = Json2Json.xml2xmlxsl(xml, xsl);
         Assert.assertEquals(target.replaceAll("\\s", ""), result.replaceAll("\\s", ""));
     }
 
@@ -59,11 +59,11 @@ public class TestJson2Json {
     }
 
     @Test
-    public void testJSon2Json()throws Exception{
+    public void testJSon2JsonDsl()throws Exception{
         String json = readResource("jsondsl.source.json");
         String dsl = readResource("jsondsl.template.dsl");
         String target = readResource("jsondsl.target.json");
-        String result = Json2Json.json2json(json, dsl);
+        String result = Json2Json.json2jsondsl(json, dsl);
         Assert.assertEquals(target.replaceAll("\\s", ""), result.replaceAll("\\s", ""));
     }
 

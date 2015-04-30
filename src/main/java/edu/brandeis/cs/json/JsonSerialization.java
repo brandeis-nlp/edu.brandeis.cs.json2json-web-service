@@ -20,10 +20,11 @@ public class JsonSerialization {
     JsonArray targets = null;
 
     public static enum OperatorType {
-        json2json,
+        json2jsondsl,
+        xml2jsondsl,
+        xml2xmlxsl,
         xml2json,
-        json2xml,
-        xml2xml
+        json2xml
     }
     OperatorType operator = null;
     String [] sources = null;
@@ -60,7 +61,7 @@ public class JsonSerialization {
         discriminator = Discriminators.Uri.JSON_LD;
         payload= JsonProxy.newObject();
         metadata = JsonProxy.newObject();
-        operator = OperatorType.json2json;
+        operator = OperatorType.json2jsondsl;
         error = JsonProxy.newObject();
         targets = JsonProxy.newArray();
     }
@@ -85,14 +86,14 @@ public class JsonSerialization {
             metadata = (JsonObject)json.get("metadata");
             if (metadata == null) {
                 metadata = JsonProxy.newObject();
-                operator = OperatorType.json2json;
+                operator = OperatorType.json2jsondsl;
             } else {
                 if(metadata.get("op") == null) {
-                    operator = OperatorType.json2json;
+                    operator = OperatorType.json2jsondsl;
                 } else {
                     operator =  OperatorType.valueOf(metadata.get("op").toString().trim().toLowerCase());
                 }
-                if(operator == OperatorType.json2json || operator == OperatorType.xml2json) {
+                if(operator == OperatorType.json2jsondsl || operator == OperatorType.xml2json) {
                     template = metadata.get("template").toString();
                 }
             }

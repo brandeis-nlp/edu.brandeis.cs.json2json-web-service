@@ -7,9 +7,9 @@
   "license": "http://vocab.lappsgrid.org/ns/license#apache-2.0",
   "requires": {
     "metadata": {
-      "op": [ "json2json", "xml2xml", "xml2json", "json2xml" ],
-      "template": "Json dsl template (op == json2json) / xslt template (op == xml2xml)",
-      "default": "op = json2json"
+      "op": [ "json2jsondsl","xml2jsondsl", "xml2xmlxsl", "xml2json", "json2xml" ],
+      "template": "Json dsl template (op == json2jsondsl) / Xml dsl template (op == xml2jsondsl) / xslt template (op == xml2xmlxsl)",
+      "default": "op = json2jsondsl"
     },
     "payload": { "sources": [ "source xml", "source json" ] }
   },

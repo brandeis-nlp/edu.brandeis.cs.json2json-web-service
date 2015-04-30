@@ -16,21 +16,31 @@ import java.util.logging.Logger;
 public class Json2JsonWS implements WebService, ITransform {
     protected static Logger log = Logger.getLogger(Json2JsonWS.class.getName());
 
-    public String json2json(String sourceJson, String templateDsl) throws Exception{
-        System.out.println("\n--------------------json2json----------------");
+    public String json2jsondsl(String sourceJson, String templateDsl) throws Exception{
+        System.out.println("\n--------------------json2jsondsl----------------");
         System.out.println("Json:\n\t\t" + sourceJson);
         System.out.println("Dsl:\n\t\t" + templateDsl);
-        String res = Json2Json.json2json(sourceJson, templateDsl);
-        System.out.println("Json2Json:\n\t\t" + res);
+        String res = Json2Json.json2jsondsl(sourceJson, templateDsl);
+        System.out.println("Json2JsonDsl:\n\t\t" + res);
         return res;
     }
 
-    public String xml2xml(String sourceXml, String templateXsl)  throws Exception{
-        System.out.println("\n--------------------xml2xml----------------");
+    @Override
+    public String xml2jsondsl(String sourceXml, String templateDsl) throws Exception {
+        System.out.println("\n--------------------xml2jsondsl----------------");
+        System.out.println("Xml:\n\t\t" + sourceXml);
+        System.out.println("Xsl:\n\t\t" + templateDsl);
+        String res = Json2Json.xml2jsondsl(sourceXml, templateDsl);
+        System.out.println("Xml2JsonDsl:\n\t\t" + res);
+        return res;
+    }
+
+    public String xml2xmlxsl(String sourceXml, String templateXsl)  throws Exception{
+        System.out.println("\n--------------------xml2xmlxsl----------------");
         System.out.println("Xml:\n\t\t" + sourceXml);
         System.out.println("Xsl:\n\t\t" + templateXsl);
-        String res = Json2Json.xml2xml(sourceXml, templateXsl);
-        System.out.println("Xml2Xml:\n\t\t" + res);
+        String res = Json2Json.xml2xmlxsl(sourceXml, templateXsl);
+        System.out.println("Xml2XmlXsl:\n\t\t" + res);
         return res;
     }
 
@@ -79,12 +89,15 @@ public class Json2JsonWS implements WebService, ITransform {
     public String execute(JsonSerialization json) throws Exception {
         for (String source : json.getSources()) {
             String target = null;
-            if (json.getOperator() == JsonSerialization.OperatorType.json2json) {
+            if (json.getOperator() == JsonSerialization.OperatorType.json2jsondsl) {
                 String template = json.getTemplate();
-                target = json2json(source, template);
-            }else if (json.getOperator() == JsonSerialization.OperatorType.xml2xml) {
+                target = json2jsondsl(source, template);
+            }else if (json.getOperator() == JsonSerialization.OperatorType.xml2jsondsl) {
                 String template = json.getTemplate();
-                target = xml2xml(source, template);
+                target = xml2jsondsl(source, template);
+            }else if (json.getOperator() == JsonSerialization.OperatorType.xml2xmlxsl) {
+                String template = json.getTemplate();
+                target = xml2xmlxsl(source, template);
             }else if (json.getOperator() == JsonSerialization.OperatorType.xml2json) {
                 target = xml2json(source);
             }else if (json.getOperator() == JsonSerialization.OperatorType.json2xml) {

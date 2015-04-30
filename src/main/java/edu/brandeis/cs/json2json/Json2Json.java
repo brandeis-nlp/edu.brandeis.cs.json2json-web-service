@@ -5,6 +5,7 @@ import groovy.json.JsonBuilder;
 import groovy.json.JsonSlurper;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
+import groovy.util.XmlSlurper;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -32,7 +33,25 @@ import java.util.List;
 public class Json2Json {
     static DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-    public static String json2json(String sourceJson, String templateDsl) {
+
+    public static String xml2jsondsl(String sourceXml, String templateDsl) throws Exception{
+        Binding binding = new Binding();
+        GroovyShell shell = new GroovyShell(binding);
+        XmlSlurper xs = new XmlSlurper();
+        Object xml = xs.parseText(sourceXml);
+        binding.setVariable("__source_xml__", xml);
+        binding.setVariable("__target_json__", null);
+        JsonBuilder jb = new JsonBuilder();
+        binding.setVariable("__json_builder__", jb);
+        StringBuffer sb = new StringBuffer("__json_builder__.call(");
+        sb.append(filterXml(templateDsl));
+        sb.append(") \n");
+        sb.append("__target_json__ = __json_builder__.toString()");
+        shell.evaluate(sb.toString());
+        return (String) binding.getVariable("__target_json__");
+    }
+
+    public static String json2jsondsl(String sourceJson, String templateDsl) throws Exception {
         Binding binding = new Binding();
         GroovyShell shell = new GroovyShell(binding);
         JsonSlurper js = new JsonSlurper();
@@ -42,7 +61,7 @@ public class Json2Json {
         JsonBuilder jb = new JsonBuilder();
         binding.setVariable("__json_builder__", jb);
         StringBuffer sb = new StringBuffer("__json_builder__.call(");
-        sb.append(filter(templateDsl));
+        sb.append(filterJson(templateDsl));
         sb.append(") \n");
         sb.append("__target_json__ = __json_builder__.toString()");
 //        System.out.println("Source:\n" + binding.getVariable("__source_json__"));
@@ -61,8 +80,23 @@ public class Json2Json {
             "unique",
             "each"
     };
+    private static String filterXml(String dsl) {
+        dsl = dsl.trim();
+        if(!dsl.startsWith("{")) {
+            dsl = "{" + dsl + "}";
+        }
+        // replace global json
+        dsl = dsl.replaceAll("\\.foreach\\s*\\{",".collect{");
+        dsl = dsl.replaceAll("\\.select\\s*\\{",".findAll{");
+        dsl = dsl.replaceAll("\\&\\$","__source_xml__.");
+        dsl = dsl.replaceAll("%\\$","__source_xml__.");
+        // replace local json
+        dsl = dsl.replaceAll("\\&\\.","it.");
+        dsl = dsl.replaceAll("%\\.","it.");
+        return dsl;
+    }
 
-    private static String filter(String dsl) {
+    private static String filterJson(String dsl) {
         dsl = dsl.trim();
         if(!dsl.startsWith("{")) {
             dsl = "{" + dsl + "}";
@@ -315,7 +349,7 @@ public static void json2node(JsonProxy.JsonObject jsonObj, XMLStreamWriter xmlSt
 
 
 
-    public static String xml2xml(String sourceXml, String templateXsl) throws Exception {
+    public static String xml2xmlxsl(String sourceXml, String templateXsl) throws Exception {
         StreamSource stylesource = new StreamSource(new StringReader(templateXsl.trim()));
         Transformer transformer = TransformerFactory.newInstance().newTransformer(stylesource);
         StringWriter writer = new StringWriter();

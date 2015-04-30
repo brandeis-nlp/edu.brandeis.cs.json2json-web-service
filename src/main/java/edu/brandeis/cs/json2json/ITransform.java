@@ -5,9 +5,11 @@ package edu.brandeis.cs.json2json;
  */
 public interface ITransform {
 
-    public String json2json(String sourceJson, String templateDsl) throws Exception;
+    public String json2jsondsl(String sourceJson, String templateDsl) throws Exception;
 
-    public String xml2xml(String sourceXml, String templateXsl) throws Exception;
+    public String xml2jsondsl(String sourceXml, String templateDsl) throws Exception;
+
+    public String xml2xmlxsl(String sourceXml, String templateXsl) throws Exception;
 
     public String xml2json(String xml) throws Exception;
 
