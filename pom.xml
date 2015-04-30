@@ -97,7 +97,7 @@
     </dependencies>
 
     <build>
-        <finalName>json2json</finalName>
+        <finalName>json2json##${project.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
