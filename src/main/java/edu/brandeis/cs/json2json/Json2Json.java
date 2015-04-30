@@ -1,7 +1,6 @@
 package edu.brandeis.cs.json2json;
 
-import edu.brandeis.cs.json.JsonProxy
-        ;
+import edu.brandeis.cs.json.JsonProxy;
 import groovy.json.JsonBuilder;
 import groovy.json.JsonSlurper;
 import groovy.lang.Binding;
