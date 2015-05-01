@@ -23,7 +23,9 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 //import com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter;
 
@@ -34,19 +36,74 @@ public class Json2Json {
     static DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
 
+    private static int findMatchEnd(String s, int fromIdx, char left, char right) {
+        return findMatch(s, fromIdx, left, right)[1];
+    }
+
+    private static int[] findMatch(String s, int fromIdx, char left, char right) {
+        int begin = s.indexOf(left, fromIdx);
+        if(begin < 0)
+            return new int[]{-1, -1};
+        int end = begin + 1;
+        int leftCount = 1;
+        while(end < s.length()){
+            if(s.charAt(end) == left) {
+                leftCount ++;
+            } else if(s.charAt(end) == right){
+                leftCount --;
+            }
+            if(leftCount == 0)
+                return new int []{begin, end};
+            end ++;
+        }
+        return new int[]{begin, -1};
+    }
+
+//    private static int nextNonWhiteSpace(String s, int fromIdx) {
+//        while(fromIdx < s.length() && Character.isWhitespace(s.charAt(fromIdx)))
+//            fromIdx ++;
+//        return fromIdx;
+//    }
+
+//     private static List<String> xmlEntities (String templateDsl) {
+//        List<String> entities = new ArrayList<String>();
+//        int start = templateDsl.indexOf("__source_xml__", 0);
+//        int end = start + 2;
+//        while( start >= 0) {
+//            while(end < templateDsl.length()) {
+//                if (templateDsl.charAt(end) == '{')
+//                    end = findMatch(templateDsl, end, '{', '}')[1];
+//                if (Character.isWhitespace(templateDsl.charAt(end))) {
+//                    int next = nextNonWhiteSpace(templateDsl, end + 1);
+//                    if(next == templateDsl.length() || templateDsl.charAt(next) != '{')
+//                        break;
+//                }
+//                end ++;
+//            }
+//            entities.add(templateDsl.substring(start, end));
+//            start = templateDsl.indexOf("__source_xml__",end);
+//            end = start + 2;
+//        }
+//        return entities;
+//    }
+
+
+
     public static String xml2jsondsl(String sourceXml, String templateDsl) throws Exception{
         Binding binding = new Binding();
         GroovyShell shell = new GroovyShell(binding);
         XmlSlurper xs = new XmlSlurper();
         Object xml = xs.parseText(sourceXml);
         binding.setVariable("__source_xml__", xml);
+        templateDsl = filterXml(templateDsl);
         binding.setVariable("__target_json__", null);
         JsonBuilder jb = new JsonBuilder();
         binding.setVariable("__json_builder__", jb);
         StringBuffer sb = new StringBuffer("__json_builder__.call(");
-        sb.append(filterXml(templateDsl));
+        sb.append(templateDsl);
         sb.append(") \n");
         sb.append("__target_json__ = __json_builder__.toString()");
+//        System.out.println("EVAL:" + sb.toString());
         shell.evaluate(sb.toString());
         return (String) binding.getVariable("__target_json__");
     }
@@ -90,7 +147,15 @@ public class Json2Json {
         dsl = dsl.replaceAll("\\.select\\s*\\{",".findAll{");
         dsl = dsl.replaceAll("\\&\\$","__source_xml__.");
         dsl = dsl.replaceAll("%\\$","__source_xml__.");
+        // replace Node functions
+        dsl = dsl.replaceAll("#text",".text()");
+        dsl = dsl.replaceAll("#name",".name()");
+        dsl = dsl.replaceAll("#parent",".parent()");
+        dsl = dsl.replaceAll("#children",".children()");
+        dsl = dsl.replaceAll("#localText",".localText()");
+        dsl = dsl.replaceAll("#localtext",".localText()");
         // replace local json
+        dsl = dsl.replaceAll("\\&\\.","it.");
         dsl = dsl.replaceAll("\\&\\.","it.");
         dsl = dsl.replaceAll("%\\.","it.");
         return dsl;

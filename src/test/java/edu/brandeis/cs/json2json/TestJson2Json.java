@@ -59,11 +59,20 @@ public class TestJson2Json {
     }
 
     @Test
-    public void testJSon2JsonDsl()throws Exception{
+    public void testJson2JsonDsl()throws Exception{
         String json = readResource("jsondsl.source.json");
         String dsl = readResource("jsondsl.template.dsl");
         String target = readResource("jsondsl.target.json");
         String result = Json2Json.json2jsondsl(json, dsl);
+        Assert.assertEquals(target.replaceAll("\\s", ""), result.replaceAll("\\s", ""));
+    }
+
+    @Test
+    public void testXml2JsonDsl()throws Exception{
+        String xml = readResource("cdcatalog.xml");
+        String dsl = readResource("cdcatalog.dsl");
+        String target = readResource("jsondsl.target.json");
+        String result = Json2Json.xml2jsondsl(xml, dsl);
         Assert.assertEquals(target.replaceAll("\\s", ""), result.replaceAll("\\s", ""));
     }
 
