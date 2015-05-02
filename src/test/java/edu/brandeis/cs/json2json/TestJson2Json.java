@@ -73,6 +73,7 @@ public class TestJson2Json {
         String dsl = readResource("cdcatalog.dsl");
         String target = readResource("jsondsl.target.json");
         String result = Json2Json.xml2jsondsl(xml, dsl);
+        System.out.println(result);
         Assert.assertEquals(target.replaceAll("\\s", ""), result.replaceAll("\\s", ""));
     }
 

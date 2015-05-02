@@ -111,7 +111,8 @@ public class Json2Json {
         GroovyShell shell = new GroovyShell(binding);
         XmlSlurper xs = new XmlSlurper();
         GPathResult xml = xs.parseText(sourceXml);
-        System.out.println(leaves(xml));
+//        System.out.println(leaves(xml));
+//        System.out.println(root(xml));
         binding.setVariable("__source_xml__", xml);
         templateDsl = filterXml(templateDsl, root(xml), leaves(xml));
         binding.setVariable("__target_json__", null);
@@ -121,8 +122,8 @@ public class Json2Json {
         sb.append(templateDsl);
         sb.append(") \n");
         sb.append("__target_json__ = __json_builder__.toString()");
-        System.out.println("Evaluate:\n" + sb.toString());
-//        shell.evaluate(sb.toString());
+//        System.out.println("Evaluate:\n" + sb.toString());
+        shell.evaluate(sb.toString());
         return (String) binding.getVariable("__target_json__");
     }
 
@@ -170,7 +171,7 @@ public class Json2Json {
         dsl = dsl.replaceAll("\\&\\.","it.");
         dsl = dsl.replaceAll("%\\.","it.");
 
-        dsl = dsl.replaceAll("__source_xml__\\.[\"]?"+root+"[\"]?\\.", "__source_xml__.");
+        dsl = dsl.replaceAll("__source_xml__\\.\"?"+root+"\"?\\.", "__source_xml__.");
 
         for(String leaf : leaves) {
             dsl = dsl.replaceAll("it\\.[\"]?"+leaf+"[\"]?", "it.\""+leaf+"\".text()");
