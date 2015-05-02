@@ -6,6 +6,7 @@ import groovy.json.JsonSlurper;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.util.XmlSlurper;
+import groovy.util.slurpersupport.GPathResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -22,10 +23,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 //import com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter;
 
@@ -59,6 +57,21 @@ public class Json2Json {
         return new int[]{begin, -1};
     }
 
+    private static Set<String> leaves (GPathResult xml) {
+        return leaves((groovy.util.slurpersupport.Node)xml.getAt(0));
+    }
+
+    private static Set<String> leaves (groovy.util.slurpersupport.Node node) {
+        Set<String> names = new HashSet<String>();
+        for(Object child: node.children()) {
+            if(child instanceof groovy.util.slurpersupport.Node) {
+                names.addAll(leaves((groovy.util.slurpersupport.Node) child));
+            } else {
+                names.add(node.name());
+            }
+        }
+        return names;
+    }
 //    private static int nextNonWhiteSpace(String s, int fromIdx) {
 //        while(fromIdx < s.length() && Character.isWhitespace(s.charAt(fromIdx)))
 //            fromIdx ++;
@@ -93,9 +106,10 @@ public class Json2Json {
         Binding binding = new Binding();
         GroovyShell shell = new GroovyShell(binding);
         XmlSlurper xs = new XmlSlurper();
-        Object xml = xs.parseText(sourceXml);
+        GPathResult xml = xs.parseText(sourceXml);
+        System.out.println(leaves(xml));
         binding.setVariable("__source_xml__", xml);
-        templateDsl = filterXml(templateDsl);
+        templateDsl = filterXml(templateDsl, leaves(xml));
         binding.setVariable("__target_json__", null);
         JsonBuilder jb = new JsonBuilder();
         binding.setVariable("__json_builder__", jb);
@@ -103,7 +117,7 @@ public class Json2Json {
         sb.append(templateDsl);
         sb.append(") \n");
         sb.append("__target_json__ = __json_builder__.toString()");
-//        System.out.println("EVAL:" + sb.toString());
+//        System.out.println("Evaluate:\n" + sb.toString());
         shell.evaluate(sb.toString());
         return (String) binding.getVariable("__target_json__");
     }
@@ -121,7 +135,6 @@ public class Json2Json {
         sb.append(filterJson(templateDsl));
         sb.append(") \n");
         sb.append("__target_json__ = __json_builder__.toString()");
-//        System.out.println("Source:\n" + binding.getVariable("__source_json__"));
 //        System.out.println("Evaluate:\n" + sb.toString());
         shell.evaluate(sb.toString());
         return (String) binding.getVariable("__target_json__");
@@ -137,7 +150,8 @@ public class Json2Json {
             "unique",
             "each"
     };
-    private static String filterXml(String dsl) {
+
+    private static String filterXml(String dsl, Collection<String> leaves) {
         dsl = dsl.trim();
         if(!dsl.startsWith("{")) {
             dsl = "{" + dsl + "}";
@@ -147,6 +161,14 @@ public class Json2Json {
         dsl = dsl.replaceAll("\\.select\\s*\\{",".findAll{");
         dsl = dsl.replaceAll("\\&\\$","__source_xml__.");
         dsl = dsl.replaceAll("%\\$","__source_xml__.");
+        // replace local json
+        dsl = dsl.replaceAll("\\&\\.","it.");
+        dsl = dsl.replaceAll("\\&\\.","it.");
+        dsl = dsl.replaceAll("%\\.","it.");
+
+        for(String leaf : leaves) {
+            dsl = dsl.replaceAll("it."+leaf, "it."+leaf+".text()");
+        }
         // replace Node functions
         dsl = dsl.replaceAll("#text",".text()");
         dsl = dsl.replaceAll("#name",".name()");
@@ -154,10 +176,7 @@ public class Json2Json {
         dsl = dsl.replaceAll("#children",".children()");
         dsl = dsl.replaceAll("#localText",".localText()");
         dsl = dsl.replaceAll("#localtext",".localText()");
-        // replace local json
-        dsl = dsl.replaceAll("\\&\\.","it.");
-        dsl = dsl.replaceAll("\\&\\.","it.");
-        dsl = dsl.replaceAll("%\\.","it.");
+        dsl = dsl.replaceAll("\\.text\\(\\)\\.text\\(\\)",".text()");
         return dsl;
     }
 

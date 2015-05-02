@@ -13,8 +13,8 @@ html{
                     "@bgcolor" "#9acd32"
                     th "Title", "Artist", "Country", "Company", "Price", "Year"
                 }] +
-                &$cd.select{&.price.text() > "9"}.foreach {
-                    [td : [&.title#text, &.artist.text(), &.company.text(), &.country.text(), &.price.text(),  &.year.text()]]
+                &$cd.select{&.price > "9"}.foreach {
+                    [td : [&.title, &.artist, &.company, &.country, &.price,  &.year]]
                 }
             )
         }
