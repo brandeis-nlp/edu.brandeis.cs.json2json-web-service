@@ -4,6 +4,7 @@ package edu.brandeis.cs.json2json;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 

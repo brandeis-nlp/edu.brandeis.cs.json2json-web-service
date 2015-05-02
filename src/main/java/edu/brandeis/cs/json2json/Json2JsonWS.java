@@ -117,7 +117,6 @@ public class Json2JsonWS implements WebService, ITransform {
             //
             String resName = "/metadata/"+ name +".json";
             System.out.println("load resources:" + resName);
-
             try {
                 String meta = IOUtils.toString(this.getClass().getResourceAsStream(resName));
                 JsonProxy.JsonObject json = JsonProxy.newObject();
