@@ -167,7 +167,7 @@ public class Json2Json {
         dsl = dsl.replaceAll("%\\.","it.");
 
         for(String leaf : leaves) {
-            dsl = dsl.replaceAll("it."+leaf, "it."+leaf+".text()");
+            dsl = dsl.replaceAll("it\\.[\"]?"+leaf+"[\"]?", "it.\""+leaf+"\".text()");
         }
         // replace Node functions
         dsl = dsl.replaceAll("#text",".text()");

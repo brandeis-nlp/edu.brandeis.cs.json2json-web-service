@@ -6,7 +6,7 @@
 
     <groupId>org.lappsgrid</groupId>
     <artifactId>json2json-web-service</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
 
