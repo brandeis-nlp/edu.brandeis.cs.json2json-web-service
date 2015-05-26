@@ -1,0 +1,12 @@
+{
+  "discriminator": "http://vocab.lappsgrid.org/ns/media/jsonld",
+  "metadata": {
+    "op": "json2jsondsl",
+    "template": "cds{\n    titles  &$catalog.\"foo:cd\".foreach{&.title}\n    artists  &$catalog.\"foo:cd\".foreach{&.artist}\n    countries  &$catalog.\"foo:cd\".foreach{&.country}\n    companies  &$catalog.\"foo:cd\".foreach{&.company}\n    pricees  &$catalog.\"foo:cd\".foreach{&.price}\n    years  &$catalog.\"foo:cd\".foreach{&.\"bar:year\"}\n}"
+  },
+  "payload": {
+    "sources": [
+      "{   \"catalog\": {     \"foo:cd\": [       {         \"title\": \"Hide your heart\",         \"artist\": \"Bonnie Tyler\",         \"country\": \"UK\",         \"company\": \"CBS Records\",         \"price\": \"9.90\",         \"bar:year\": \"1988\"       },       {         \"title\": \"Greatest Hits\",         \"artist\": \"Dolly Parton\",         \"country\": \"USA\",         \"company\": \"RCA\",         \"price\": \"9.90\",         \"bar:year\": \"1982\"       }     ]   } }"
+    ]
+  }
+}

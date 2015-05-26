@@ -58,6 +58,7 @@ public class JsonSerialization {
 //    }
 //
     public JsonSerialization() {
+        json = JsonProxy.newObject();
         discriminator = Discriminators.Uri.JSON_LD;
         payload= JsonProxy.newObject();
         metadata = JsonProxy.newObject();
@@ -304,9 +305,9 @@ public class JsonSerialization {
         json.put("discriminator" ,discriminator);
         if (discriminator.equals(Discriminators.Uri.JSON_LD)) {
             payload.put("targets", targets);
+            json.put("@context",context);
+            json.put("metadata", metadata);
             json.put("payload" ,payload);
-            payload.put("@context",context);
-            payload.put("metadata", metadata);
         } else if(discriminator.equals(Discriminators.Uri.ERROR)) {
             json.put("payload" ,error);
         }
