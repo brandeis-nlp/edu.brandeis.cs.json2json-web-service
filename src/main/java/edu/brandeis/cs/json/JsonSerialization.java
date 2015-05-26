@@ -84,7 +84,7 @@ public class JsonSerialization {
         discriminator = json.get("discriminator").toString().trim();
         if(discriminator.equals(Discriminators.Uri.JSON_LD)) {
             payload = (JsonObject)json.get("payload");
-            metadata = (JsonObject)json.get("metadata");
+            metadata = (JsonObject)payload.get("metadata");
             if (metadata == null) {
                 metadata = JsonProxy.newObject();
                 operator = OperatorType.json2jsondsl;
@@ -305,8 +305,8 @@ public class JsonSerialization {
         json.put("discriminator" ,discriminator);
         if (discriminator.equals(Discriminators.Uri.JSON_LD)) {
             payload.put("targets", targets);
-            json.put("@context",context);
-            json.put("metadata", metadata);
+            payload.put("@context",context);
+            payload.put("metadata", metadata);
             json.put("payload" ,payload);
         } else if(discriminator.equals(Discriminators.Uri.ERROR)) {
             json.put("payload" ,error);

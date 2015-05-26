@@ -45,6 +45,7 @@
         <lapps.version>2.0.0</lapps.version>
         <lapps.discriminator>2.0.1</lapps.discriminator>
         <groovy.version>2.4.3</groovy.version>
+        <serialization.version>2.0.0</serialization.version>
     </properties>
 
     <dependencies>
@@ -94,6 +95,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>serialization</artifactId>
+            <version>${serialization.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
