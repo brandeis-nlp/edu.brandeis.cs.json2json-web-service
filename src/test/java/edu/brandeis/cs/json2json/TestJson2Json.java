@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Test;
+import org.lappsgrid.json2json.Json2Json;
 
 import java.io.File;
 import java.util.List;

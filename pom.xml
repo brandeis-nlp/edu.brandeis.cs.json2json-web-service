@@ -6,7 +6,7 @@
 
     <groupId>org.lappsgrid</groupId>
     <artifactId>json2json-web-service</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
 
@@ -17,7 +17,7 @@
         <url>https://github.com/chunqishi/edu.brandeis.cs.json2json-web-service</url>
         <connection>scm:git:https://github.com/chunqishi/edu.brandeis.cs.json2json-web-service.git</connection>
         <developerConnection>scm:git:https://github.com/chunqishi/edu.brandeis.cs.json2json-web-service.git</developerConnection>
-        <tag>v0.1</tag>
+        <tag>v0.3.2-SNAPSHOT</tag>
     </scm>
 
     <distributionManagement>
@@ -49,6 +49,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>json2json</artifactId>
+            <version>0.3.2</version>
+        </dependency>
 
         <!-- ^^^^^^^^^^^^^^ Groovy    ^^^^^^^^^^^^^^^^^^^^^ -->
         <dependency>

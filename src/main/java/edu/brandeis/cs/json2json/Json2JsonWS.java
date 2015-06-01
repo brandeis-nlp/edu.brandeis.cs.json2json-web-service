@@ -1,10 +1,12 @@
 package edu.brandeis.cs.json2json;
 
-import edu.brandeis.cs.json.JsonProxy;
 import edu.brandeis.cs.json.JsonSerialization;
 import org.apache.commons.io.IOUtils;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.discriminator.Discriminators;
+import org.lappsgrid.json2json.Json2Json;
+import org.lappsgrid.json2json.jsonobject.JsonObject;
+import org.lappsgrid.json2json.jsonobject.JsonProxy;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -119,15 +121,15 @@ public class Json2JsonWS implements WebService, ITransform {
                 System.out.println("load resources:" + resName);
                 try {
                     String meta = IOUtils.toString(this.getClass().getResourceAsStream(resName));
-                    JsonProxy.JsonObject json = JsonProxy.newObject();
+                    JsonObject json = JsonProxy.newObject();
                     json.put("discriminator", Discriminators.Uri.META);
                     json.put("payload", JsonProxy.newObject().read(meta));
                     System.out.println("---------------------META:-------------------\n" + json.toString());
                     return json.toString();
                 }catch (Throwable th) {
-                    JsonProxy.JsonObject json = JsonProxy.newObject();
+                    JsonObject json = JsonProxy.newObject();
                     json.put("discriminator", Discriminators.Uri.ERROR);
-                    JsonProxy.JsonObject error = JsonProxy.newObject();
+                    JsonObject error = JsonProxy.newObject();
                     error.put("class", name);
                     error.put("error", "NOT EXIST: " + resName);
                     error.put("message", th.getMessage());

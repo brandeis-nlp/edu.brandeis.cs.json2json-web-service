@@ -1,8 +1,10 @@
 package edu.brandeis.cs.json;
 
-import edu.brandeis.cs.json.JsonProxy.JsonArray;
-import edu.brandeis.cs.json.JsonProxy.JsonObject;
+
 import org.lappsgrid.discriminator.Discriminators;
+import org.lappsgrid.json2json.jsonobject.JsonArray;
+import org.lappsgrid.json2json.jsonobject.JsonObject;
+import org.lappsgrid.json2json.jsonobject.JsonProxy;
 
 /**
  * Created by lapps on 10/22/2014.
