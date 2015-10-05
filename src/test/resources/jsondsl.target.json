@@ -1,0 +1,78 @@
+{
+  "html": {
+    "@xmlns:bar": "http://www.bar.org",
+    "@xmlns:foo": "http://www.foo.org/",
+    "body": {
+      "h2": {
+        "@style": "font:12pt",
+        "__text__": "MyCDCollection"
+      },
+      "table": {
+        "@border": "1",
+        "tr": [
+          {
+            "@bgcolor": "#9acd32",
+            "th": [
+              "Title",
+              "Artist",
+              "Country",
+              "Company",
+              "Price",
+              "Year"
+            ]
+          },
+          {
+            "td": [
+              "Hideyourheart",
+              "BonnieTyler",
+              "CBSRecords",
+              "UK",
+              "9.90",
+              "1988"
+            ]
+          },
+          {
+            "td": [
+              "GreatestHits",
+              "DollyParton",
+              "RCA",
+              "USA",
+              "9.90",
+              "1982"
+            ]
+          },
+          {
+            "td": [
+              "Eros",
+              "ErosRamazzotti",
+              "BMG",
+              "EU",
+              "9.90",
+              "1997"
+            ]
+          },
+          {
+            "td": [
+              "BigWilliestyle",
+              "WillSmith",
+              "Columbia",
+              "USA",
+              "9.90",
+              "1997"
+            ]
+          },
+          {
+            "td": [
+              "PavarottiGalaConcert",
+              "LucianoPavarotti",
+              "DECCA",
+              "UK",
+              "9.90",
+              "1991"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
