@@ -6,7 +6,7 @@
 
     <groupId>org.lappsgrid</groupId>
     <artifactId>json2json-web-service</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.3-SNAPSHOT</version>
     <packaging>war</packaging>
 
 
@@ -42,19 +42,19 @@
 
 
     <properties>
-        <lapps.version>2.0.0</lapps.version>
-        <lapps.discriminator>2.0.1</lapps.discriminator>
-        <groovy.version>2.4.3</groovy.version>
+        <lapps.version>2.0.4</lapps.version>
+        <lapps.discriminator>2.1.0-SNAPSHOT</lapps.discriminator>
+        <groovy.version>2.4.5</groovy.version>
         <serialization.version>2.0.0</serialization.version>
     </properties>
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.lappsgrid</groupId>
-            <artifactId>json2json</artifactId>
-            <version>0.3.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.lappsgrid</groupId>-->
+            <!--<artifactId>json2json</artifactId>-->
+            <!--<version>0.3.2</version>-->
+        <!--</dependency>-->
 
         <!-- ^^^^^^^^^^^^^^ Groovy    ^^^^^^^^^^^^^^^^^^^^^ -->
         <dependency>
@@ -75,7 +75,7 @@
 
         <dependency>
             <groupId>org.lappsgrid</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>all</artifactId>
             <version>${lapps.version}</version>
         </dependency>
         <dependency>
@@ -101,11 +101,11 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.lappsgrid</groupId>
-            <artifactId>serialization</artifactId>
-            <version>${serialization.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.lappsgrid</groupId>-->
+            <!--<artifactId>serialization</artifactId>-->
+            <!--<version>${serialization.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -127,8 +127,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
