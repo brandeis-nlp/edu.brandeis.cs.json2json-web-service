@@ -60,27 +60,27 @@ public class WSJsonBuilder {
 //
     public WSJsonBuilder(String textjson) {
         json = new JsonObj(textjson);
-        discriminator = json.get("discriminator").toString().trim();
+        discriminator = json.getString("discriminator").trim();
         if(discriminator.equals(Discriminators.Uri.JSON_LD)) {
-            payload = (JsonObj)json.get("payload");
-            metadata = (JsonObj)payload.get("metadata");
+            payload = (JsonObj)json.getJsonObj("payload");
+            metadata = (JsonObj)payload.getJsonObj("metadata");
             if (metadata == null) {
                 metadata = new JsonObj();
                 operator = OperatorType.json2jsondsl;
             } else {
-                if(metadata.get("op") == null) {
+                if(metadata.getString("op") == null) {
                     operator = OperatorType.json2jsondsl;
                 } else {
-                    operator =  OperatorType.valueOf(metadata.get("op").toString().trim().toLowerCase());
+                    operator =  OperatorType.valueOf(metadata.getString("op").trim().toLowerCase());
                 }
                 if(operator == OperatorType.json2jsondsl || operator == OperatorType.xml2json) {
-                    template = metadata.get("template").toString();
+                    template = metadata.getString("template");
                 }
             }
-            JsonArr sourceArr =  (JsonArr)payload.get("sources");
+            JsonArr sourceArr =  (JsonArr)payload.getJsonArr("sources");
             sources = new String[sourceArr.length()];
             for(int i = 0; i < sourceArr.length(); i++) {
-                sources[i] = sourceArr.get(i).toString();
+                sources[i] = sourceArr.getString(i);
             }
             targets = new JsonArr();
         }

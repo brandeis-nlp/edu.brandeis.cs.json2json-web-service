@@ -86,11 +86,8 @@ public class Json2JsonWS implements WebService, ITransform {
             }
             return execute(json);
         }catch(Throwable th) {
-//            json = new WSJsonBuilder();
-//            return json.toString();
             StringWriter sw = new StringWriter();
             th.printStackTrace( new PrintWriter(sw));
-            json.setError(th.toString(), sw.toString());
             System.err.println(sw.toString());
             LOG.severe(sw.toString());
             return s;

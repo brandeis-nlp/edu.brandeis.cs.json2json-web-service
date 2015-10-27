@@ -3,7 +3,7 @@
   "payload": {
     "metadata": {
       "op": "json2jsondsl",
-      "template": "cds{\n    titles  &$catalog.\"foo:cd\".foreach{&.title}\n    artists  &$catalog.\"foo:cd\".foreach{&.artist}\n    countries  &$catalog.\"foo:cd\".foreach{&.country}\n    companies  &$catalog.\"foo:cd\".foreach{&.company}\n    pricees  &$catalog.\"foo:cd\".foreach{&.price}\n    years  &$catalog.\"foo:cd\".foreach{&.\"bar:year\"}\n}"
+      "template": "cds{\n    titles  &:catalog.\"foo:cd\".foreach{&.title}\n    artists  &:catalog.\"foo:cd\".foreach{&.artist}\n    countries  &:catalog.\"foo:cd\".foreach{&.country}\n    companies  &:catalog.\"foo:cd\".foreach{&.company}\n    pricees  &:catalog.\"foo:cd\".foreach{&.price}\n    years  &:catalog.\"foo:cd\".foreach{&.\"bar:year\"}\n}"
     },
     "@context": "http://vocab.lappsgrid.org/context-1.0.0.jsonld",
     "sources": [
