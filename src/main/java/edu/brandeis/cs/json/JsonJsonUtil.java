@@ -15,7 +15,7 @@ public class JsonJsonUtil {
     public boolean has(Object obj, String s) {
         if(obj == null)
             return false;
-        LOG.info(String.format("JsonJsonUtil.has ( %s , %s) ", obj.toString(), s));
+//        LOG.info(String.format("JsonJsonUtil.has ( %s , %s) ", obj.toString(), s));
         return obj.toString().contains(s);
     }
 
