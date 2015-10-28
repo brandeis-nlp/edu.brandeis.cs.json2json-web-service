@@ -1,0 +1,54 @@
+{
+  "discriminator": "http://vocab.lappsgrid.org/ns/media/jsonld#lif",
+  "payload": {
+    "@context": "http://vocab.lappsgrid.org/context-1.0.0.jsonld",
+    "metadata": {
+
+    },
+    "text": {
+      "@value": "Hello World.",
+      "@language": "en"
+    },
+    "views": [
+      {
+        "metadata": {
+          "contains": {
+            "http://vocab.lappsgrid.org/Token": {
+              "producer": "edu.brandeis.cs.lappsgrid.stanford.corenlp.Tokenizer:2.0.1-SNAPSHOT",
+              "type": "tokenizer:stanford"
+            }
+          }
+        },
+        "annotations": [
+          {
+            "id": "tk_0_0",
+            "start": 0,
+            "end": 5,
+            "@type": "http://vocab.lappsgrid.org/Token",
+            "features": {
+              "word": "Hello"
+            }
+          },
+          {
+            "id": "tk_0_1",
+            "start": 6,
+            "end": 11,
+            "@type": "http://vocab.lappsgrid.org/Token",
+            "features": {
+              "word": "World"
+            }
+          },
+          {
+            "id": "tk_0_2",
+            "start": 11,
+            "end": 12,
+            "@type": "http://vocab.lappsgrid.org/Token",
+            "features": {
+              "word": "."
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

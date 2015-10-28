@@ -18,6 +18,7 @@ public class DslJsonJson {
 
     public static final String REF_JSON_SOURCE = "__source_json__";
     public static final String REF_JSON_BUILDER = "__json_builder__";
+    public static final String REF_JSONJSON_UTIL = "__jsonjson_util__";
 
     public static final String KEYWORD_GLOBAL = "&:";
     public static final String KEYWORD_GLOBAL_MATCH = REF_JSON_SOURCE + ".";
@@ -28,15 +29,19 @@ public class DslJsonJson {
     public static final String KEYWORD_SELECT = "select";
     public static final String KEYWORD_SELECT_MATCH = "findAll";
 
+    public static final String KEYWORD_UTIL = "%.";
+    public static final String KEYWORD_UTIL_MATCH = REF_JSONJSON_UTIL + ".";
 
     public static String transform(String sourceJson, String templateDsl){
         Binding binding = new Binding();
         GroovyShell shell = new GroovyShell(binding);
         JsonSlurper js = new JsonSlurper();
         JsonBuilder jb = new JsonBuilder();
+        JsonJsonUtil util = new JsonJsonUtil();
         Object json = js.parseText(sourceJson);
         binding.setVariable(REF_JSON_SOURCE, json);
         binding.setVariable(REF_JSON_BUILDER, jb);
+        binding.setVariable(REF_JSONJSON_UTIL, util);
         String script = String.format("%s.call(\n %s \n)", REF_JSON_BUILDER, filterJson(templateDsl));
         LOG.info(String.format("JsonBuilder Script: \n %s \n", script));
         shell.evaluate(script);
@@ -68,6 +73,8 @@ public class DslJsonJson {
         dsl = replacing(dsl, KEYWORD_GLOBAL, KEYWORD_GLOBAL_MATCH);
         // replace local json
         dsl = replacing(dsl, KEYWORD_LOCAL, KEYWORD_LOCAL_MATCH);
+        // replace util
+        dsl = replacing(dsl, KEYWORD_UTIL, KEYWORD_UTIL_MATCH);
         return dsl;
     }
 }

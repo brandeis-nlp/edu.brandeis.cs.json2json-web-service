@@ -14,7 +14,7 @@ html{
                     th "Title", "Artist", "Country", "Company", "Price", "Year"
                 }] +
                 &$cd.select{&.price > "9"}.foreach {
-                    [td : [&.title, &.artist, &.company, &.country, &.price,  &.year]]
+                    [td : [%.(&.title), &.artist, &.company, &.country, &.price,  &.year]]
                 }
             )
         }

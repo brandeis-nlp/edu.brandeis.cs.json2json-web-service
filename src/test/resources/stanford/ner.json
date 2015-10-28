@@ -1,0 +1,81 @@
+{
+  "discriminator": "http://vocab.lappsgrid.org/ns/media/jsonld#lif",
+  "payload": {
+    "@context": "http://vocab.lappsgrid.org/context-1.0.0.jsonld",
+    "metadata": {
+
+    },
+    "text": {
+      "@value": "If possible, we would appreciate comments no later than 3:00 PM EST on Sunday, August 26.  Comments can be faxed to my attention at 202/338-2416 or emailed to cfr@vnf.com or gdb@vnf.com (Gary GaryBachman).\\n\\nThank you.",
+      "@language": "en"
+    },
+    "views": [
+      {
+        "metadata": {
+          "contains": {
+            "http://vocab.lappsgrid.org/NamedEntity": {
+              "producer": "edu.brandeis.cs.lappsgrid.stanford.corenlp.NamedEntityRecognizer:2.0.1-SNAPSHOT",
+              "type": "ner:stanford"
+            }
+          }
+        },
+        "annotations": [
+          {
+            "id": "ne_0",
+            "start": 71,
+            "end": 77,
+            "@type": "http://vocab.lappsgrid.org/Date",
+            "features": {
+              "word": "Sunday"
+            }
+          },
+          {
+            "id": "ne_1",
+            "start": 77,
+            "end": 78,
+            "@type": "http://vocab.lappsgrid.org/Date",
+            "features": {
+              "word": ","
+            }
+          },
+          {
+            "id": "ne_2",
+            "start": 79,
+            "end": 85,
+            "@type": "http://vocab.lappsgrid.org/Date",
+            "features": {
+              "word": "August"
+            }
+          },
+          {
+            "id": "ne_3",
+            "start": 86,
+            "end": 88,
+            "@type": "http://vocab.lappsgrid.org/Date",
+            "features": {
+              "word": "26"
+            }
+          },
+          {
+            "id": "ne_4",
+            "start": 187,
+            "end": 191,
+            "@type": "http://vocab.lappsgrid.org/Person",
+            "features": {
+              "word": "Gary"
+            }
+          },
+          {
+            "id": "ne_5",
+            "start": 192,
+            "end": 203,
+            "@type": "http://vocab.lappsgrid.org/Person",
+            "features": {
+              "word": "GaryBachman"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

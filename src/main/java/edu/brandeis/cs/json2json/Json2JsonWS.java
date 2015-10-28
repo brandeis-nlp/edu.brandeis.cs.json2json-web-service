@@ -21,10 +21,10 @@ public class Json2JsonWS implements WebService, ITransform {
 
     public String json2jsondsl(String sourceJson, String templateDsl) throws Exception{
         System.out.println("\n--------------------json2jsondsl----------------");
-        System.out.println("Json:\n\t\t" + sourceJson);
-        System.out.println("Dsl:\n\t\t" + templateDsl);
+//        System.out.println("Json:\n\t\t" + sourceJson);
+//        System.out.println("Dsl:\n\t\t" + templateDsl);
         String res = DslJsonJson.transform(sourceJson, templateDsl);
-        System.out.println("Json2JsonDsl:\n\t\t" + res);
+//        System.out.println("Json2JsonDsl:\n\t\t" + res);
         return res;
     }
 
