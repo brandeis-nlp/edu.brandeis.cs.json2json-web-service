@@ -59,11 +59,11 @@ if (isNer) {
        }
 }
 
-if (isTagger) {
+//if (isTagger) {
     targetEntities += lastViewAnns.select{&.features.pos != null}.unique{ &.start + " " + &.end }.foreach {
         [&.id, %.toUpper(&.features.pos), [[&.start.toInteger(), &.end.toInteger()]]]
     }
-}
+//}
 
 text  targetText
 
