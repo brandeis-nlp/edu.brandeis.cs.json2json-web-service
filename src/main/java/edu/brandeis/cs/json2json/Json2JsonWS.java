@@ -95,6 +95,7 @@ public class Json2JsonWS implements WebService, ITransform {
     }
 
     public String execute(WSJsonBuilder json) throws Exception {
+
         for (String source : json.getSources()) {
             String target = null;
             if (json.getOperator() == WSJsonBuilder.OperatorType.json2jsondsl) {

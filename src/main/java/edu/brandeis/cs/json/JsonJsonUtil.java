@@ -97,4 +97,13 @@ public class JsonJsonUtil {
             return arr[arr.length - 1];
         return null;
     }
+
+    public String appendNewLine(Object obj) {
+        StringBuilder sb  = new StringBuilder();
+        if (obj != null) {
+            sb.append(obj.toString());
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
 }
