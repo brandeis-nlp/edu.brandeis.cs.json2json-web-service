@@ -60,7 +60,7 @@ if (isNer) {
 }
 
 //if (isTagger) {
-    targetEntities += lastViewAnns.select{&.features.pos != null}.unique{ &.start + " " + &.end }.foreach {
+    targetEntities += lastViewAnns.select{&.features != null  &&  &.features.pos != null}.unique{ &.start + " " + &.end }.foreach {
         [&.id, %.toUpper(&.features.pos), [[&.start.toInteger(), &.end.toInteger()]]]
     }
 //}
