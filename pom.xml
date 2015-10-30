@@ -42,10 +42,10 @@
 
 
     <properties>
-        <lapps.version>2.0.4</lapps.version>
-        <lapps.discriminator>2.1.0-SNAPSHOT</lapps.discriminator>
+        <lapps.all>2.2.0</lapps.all>
+        <lapps.discriminator>2.2.0</lapps.discriminator>
         <groovy.version>2.4.5</groovy.version>
-        <serialization.version>2.0.0</serialization.version>
+        <jackson.version>2.6.2</jackson.version>
     </properties>
 
     <dependencies>
@@ -70,13 +70,14 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.4.4</version>
+            <version>${jackson.version}</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>all</artifactId>
-            <version>${lapps.version}</version>
+            <version>${lapps.all}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>

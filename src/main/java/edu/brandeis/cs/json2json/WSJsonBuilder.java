@@ -1,6 +1,8 @@
-package edu.brandeis.cs.json;
+package edu.brandeis.cs.json2json;
 
 
+import edu.brandeis.cs.json.JsonArr;
+import edu.brandeis.cs.json.JsonObj;
 import org.lappsgrid.discriminator.Discriminators;
 /**
  * Created by lapps on 10/22/2014.

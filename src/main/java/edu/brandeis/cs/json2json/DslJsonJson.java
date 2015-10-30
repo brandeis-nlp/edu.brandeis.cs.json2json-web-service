@@ -1,4 +1,4 @@
-package edu.brandeis.cs.json;
+package edu.brandeis.cs.json2json;
 
 import groovy.json.JsonBuilder;
 import groovy.json.JsonSlurper;

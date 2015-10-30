@@ -1,4 +1,4 @@
-package edu.brandeis.cs.json;
+package edu.brandeis.cs.json2json;
 
 import java.util.logging.Logger;
 

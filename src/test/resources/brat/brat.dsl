@@ -6,15 +6,31 @@
  [ %. ] refers to the toolkit.
 ***********************************************************************************************************************/
 
+def targetText = ""
+def targetRelations = []
+def targetEquivs = []
+def targetEntities = []
 
-def idx = 0
-
+if (! %.has(&:toString(), "discriminator")) {
+  text &:toString()
+  return
+}
 def discriminator = &:discriminator
+if (discriminator == null) return
+
+def isText = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/text")
+if (isText) {
+    text &:payload
+    return
+}
+
+def isLifTex = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/jsonld")
+if (!isLifTex) return
+
 def lastView = &:payload.views[-1]
 if (lastView == null) return
 
-def isText = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/text")
-def isLifTex = %.has( &:discriminator,  "http://vocab.lappsgrid.org/ns/media/jsonld#lif")
+
 def isCoref = %.has(lastView.metadata.contains,  "Coreference")
 def isDepParser = %.has(lastView.metadata.contains,  "DependencyStructure")
 def isParser = %.has(lastView.metadata.contains,  "Constituent")
@@ -23,12 +39,6 @@ def isTagger = %.has(lastView.metadata.contains,  "Token#pos")
 
 def lastViewAnns = lastView.annotations
 if (lastViewAnns == null) return
-
-
-def targetText = ""
-def targetRelations = []
-def targetEquivs = []
-def targetEntities = []
 
 if (isText) targetText = &:payload
 if (isLifTex) targetText = &:payload.text."@value"

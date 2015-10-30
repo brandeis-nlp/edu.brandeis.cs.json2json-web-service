@@ -1,4 +1,4 @@
-package edu.brandeis.cs.json;
+package edu.brandeis.cs.json2json;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
