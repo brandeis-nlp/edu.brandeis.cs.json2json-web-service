@@ -1,69 +1,85 @@
 package edu.brandeis.cs.json;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Created by shi on 5/15/14.
+ * Created by 310201833 on 2015/10/30.
  */
-public class JsonObj implements IJsonObj {
+public class JsonObj extends JsonProxy implements Json.Obj {
 
     Map<String, Object> map = null;
 
-    public JsonObj(String json){
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            map = (Map)mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public JsonObj() {
+        map = new LinkedHashMap<String, Object>();
     }
 
-    public IJsonObj read(String json) {
+    public JsonObj(Map<String, Object> map) {
+        this.map = map;
+    }
+
+
+    public JsonObj(String s) {
+        this.read(s);
+    }
+
+    public Json.Obj read(String s) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            map = (Map)mapper.readValue(json, Map.class);
+            map = (Map) mapper.readValue(s, LinkedHashMap.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return this;
     }
 
-    public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        try {
-            return mapper.writeValueAsString(this.map);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+    public boolean has(String key) {
+        return map.containsKey(key);
     }
 
-    public JsonObj(Map map){
-        this.map = map;
-    }
-
-    public JsonObj(){
-        this.map = new LinkedHashMap<String, Object>();
-    }
 
     public Object get(String key) {
-        return this.map.get(key);
+        return wrap(map.get(key));
     }
+
+
+    public Json.Obj put(String key, Object val) {
+        map.put(key, unwrap(val));
+        return this;
+    }
+
+
+    public Json.Obj remove(String key) {
+        map.remove(key);
+        return this;
+    }
+
+
+    public int length() {
+        return map.size();
+    }
+
+
+    public Collection<String> keys() {
+        return map.keySet();
+    }
+
+
+    public Object original() {
+        return map;
+    }
+
 
     public String getString(String key) {
         Object val = this.get(key);
         if (val != null) {
-            return (String)val;
+            return (String) val;
         }
         return null;
     }
@@ -71,7 +87,7 @@ public class JsonObj implements IJsonObj {
     public Long getLong(String key) {
         Object val = this.get(key);
         if (val != null) {
-            return (Long)val;
+            return (Long) val;
         }
         return null;
     }
@@ -79,7 +95,7 @@ public class JsonObj implements IJsonObj {
     public Double getDouble(String key) {
         Object val = this.get(key);
         if (val != null) {
-            return (Double)val;
+            return (Double) val;
         }
         return null;
     }
@@ -87,7 +103,7 @@ public class JsonObj implements IJsonObj {
     public Boolean getBoolean(String key) {
         Object val = this.get(key);
         if (val != null) {
-            return (Boolean)val;
+            return (Boolean) val;
         }
         return null;
     }
@@ -95,69 +111,34 @@ public class JsonObj implements IJsonObj {
     public Integer getInt(String key) {
         Object val = this.get(key);
         if (val != null) {
-            return ((Integer)val);
+            return ((Integer) val);
         }
         return null;
     }
 
-    public JsonArr getJsonArr(String key){
+    public Arr getJsonArr(String key) {
         Object val = this.get(key);
         if (val != null) {
-            return new JsonArr((List)val);
+            return (Arr) val;
         }
         return null;
     }
 
-    public boolean has(String key) {
-        return this.map.containsKey(key);
-    }
-
-    public JsonObj getJsonObj(String key){
+    public Obj getJsonObj(String key) {
         Object val = this.get(key);
         if (val != null) {
-            return new JsonObj((Map)val);
+            return (Obj) val;
         }
         return null;
     }
 
-    public JsonObj put(String key, Object obj) {
-        if(obj instanceof JsonArr) {
-            obj = ((JsonArr)obj).list;
-        } else if (obj instanceof JsonObj) {
-            obj = ((JsonObj)obj).map;
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this.map);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        this.map.put(key, obj);
-        return this;
+        return null;
     }
-
-    public IJsonObj remove(String key) {
-        this.map.remove(key);
-        return this;
-    }
-
-    public int length() {
-        return this.map.size();
-    }
-
-    public Collection<String> keys() {
-        return this.map.keySet();
-    }
-
-    public Object original() {
-        return this.map;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        JsonObj obj = (JsonObj) o;
-        if (obj == null)
-            return false;
-        if (this.map == null && obj.map == null)
-            return true;
-        if (this.map != null && obj.map != null) {
-            return this.map.equals(obj.map);
-        }
-        return false;
-    }
-
 }
